@@ -24,7 +24,7 @@ export const getUsers = async (token) => {
 };
 
 export const loginUser = async (credentials) => {
-  const response = await fetch(`${APP_BASE_URL}/auth/login`, {
+  const response = await fetch(`${APP_BASE_URL}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(credentials),
@@ -34,7 +34,7 @@ export const loginUser = async (credentials) => {
 };
 
 export const registerUser = async (data) => {
-  const response = await fetch(`${APP_BASE_URL}/auth/register`, {
+  const response = await fetch(`${APP_BASE_URL}/api/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -45,7 +45,7 @@ export const registerUser = async (data) => {
 
 export const getUserProfile = async () => {
   const token = localStorage.getItem("token");
-  const response = await fetch(`${APP_BASE_URL}/auth/profile`, {
+  const response = await fetch(`${APP_BASE_URL}/api/auth/profile`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -56,7 +56,7 @@ export const getUserProfile = async () => {
 };
 
 export const getProjects = async (token) => {
-  const response = await fetch(`${APP_BASE_URL}/projects`, {
+  const response = await fetch(`${APP_BASE_URL}/api/projects`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ export const getProjects = async (token) => {
 };
 
 export async function getProjectById(id, token) {
-  const res = await fetch(`${APP_BASE_URL}/projects/${id}`, {
+  const res = await fetch(`${APP_BASE_URL}/api/projects/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -86,7 +86,7 @@ export async function getProjectById(id, token) {
 }
 
 export const createProject = async (data, token) => {
-  const response = await fetch(`${APP_BASE_URL}/projects`, {
+  const response = await fetch(`${APP_BASE_URL}/api/projects`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -104,7 +104,7 @@ export const createProject = async (data, token) => {
 
 export const assignTeam = async (projectId, userId, role, token) => {
   const response = await fetch(
-    `${APP_BASE_URL}/projects/${projectId}/assign-team`,
+    `${APP_BASE_URL}/api/projects/${projectId}/assign-team`,
     {
       method: "PUT",
       headers: {
@@ -126,7 +126,7 @@ export const assignTeam = async (projectId, userId, role, token) => {
 };
 
 export const getInvoices = async (token) => {
-  const response = await fetch(`${APP_BASE_URL}/invoices`, {
+  const response = await fetch(`${APP_BASE_URL}/api/invoices`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -137,7 +137,7 @@ export const getInvoices = async (token) => {
 };
 
 export const createInvoice = async (data, token) => {
-  const response = await fetch(`${APP_BASE_URL}/invoices`, {
+  const response = await fetch(`${APP_BASE_URL}/api/invoices`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -151,7 +151,7 @@ export const createInvoice = async (data, token) => {
 };
 
 export const updateInvoiceStatus = async (id, status, token) => {
-  const response = await fetch(`${APP_BASE_URL}/invoices/${id}/status`, {
+  const response = await fetch(`${APP_BASE_URL}/api/invoices/${id}/status`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -165,7 +165,7 @@ export const updateInvoiceStatus = async (id, status, token) => {
 
 export const deleteInvoice = async (id, token) => {
   try {
-    const response = await fetch(`${APP_BASE_URL}/invoices/${id}`, {
+    const response = await fetch(`${APP_BASE_URL}/api/invoices/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -190,7 +190,7 @@ export const deleteInvoice = async (id, token) => {
 
 export const downloadInvoice = async (id, token) => {
   const response = await fetch(
-    `${APP_BASE_URL}/invoices/invoices/${id}/download`,
+    `${APP_BASE_URL}/api/invoices/invoices/${id}/download`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

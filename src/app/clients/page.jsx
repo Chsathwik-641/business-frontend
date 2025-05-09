@@ -25,7 +25,7 @@ const ClientsPage = () => {
     };
 
     try {
-      const response = await fetch(`${APP_BASE_URL}${url}`, {
+      const response = await fetch(`${APP_BASE_URL}/api${url}`, {
         method,
         headers,
         body: body ? JSON.stringify(body) : null,

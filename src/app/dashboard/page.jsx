@@ -37,7 +37,7 @@ const Dashboard = () => {
   // Fetch users function
   const fetchUsers = async () => {
     try {
-      const res = await axios.get(`${APP_BASE_URL}/users`, {
+      const res = await axios.get(`${APP_BASE_URL}/api/users`, {
         headers: { Authorization: `Bearer ${user?.token}` },
       });
       setUsers(res.data);
@@ -53,7 +53,7 @@ const Dashboard = () => {
     }
 
     try {
-      const response = await axios.get(`${APP_BASE_URL}/clients`, {
+      const response = await axios.get(`${APP_BASE_URL}/api/clients`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -66,7 +66,7 @@ const Dashboard = () => {
   // Fetch projects function
   const fetchProjects = async () => {
     try {
-      const res = await axios.get(`${APP_BASE_URL}/projects`, {
+      const res = await axios.get(`${APP_BASE_URL}/api/projects`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setProjects(res.data);
@@ -78,7 +78,7 @@ const Dashboard = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get(`${APP_BASE_URL}/users/${userId}`, {
+      const res = await axios.get(`${APP_BASE_URL}/api/users/${userId}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setSelectedUser(res.data);
