@@ -10,15 +10,15 @@ const ClientsPage = () => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
 
-  const { user } = useAuth(); // Use AuthContext to get the token
+  const { user } = useAuth();
   const token = user?.token;
 
-  const API_BASE_URL = "http://localhost:5000/api"; // API base URL (adjust for production if needed)
+  const API_BASE_URL = "http://localhost:5000/api";
   console.log("came here User Token:", user?.token);
 
   // Helper function to fetch data with Authorization
   const fetchData = async (url, method = "GET", body = null) => {
-    const token = user?.token; // Get token from context
+    const token = user?.token;
     const headers = {
       "Content-Type": "application/json",
       Authorization: token ? `Bearer ${token}` : "",
@@ -44,7 +44,7 @@ const ClientsPage = () => {
 
   // Fetch clients
   const fetchClients = async () => {
-    const token = user?.token; // Assuming the token is stored in user context or similar
+    const token = user?.token;
 
     if (!token) {
       console.log("No token available");
@@ -56,7 +56,7 @@ const ClientsPage = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Add the token here
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -66,9 +66,7 @@ const ClientsPage = () => {
 
       const data = await response.json();
       setClients(data);
-    } catch (error) {
-      console.error("Error fetching clients:", error);
-    }
+    } catch (error) {}
   };
 
   // Fetch projects for assignment
@@ -125,8 +123,8 @@ const ClientsPage = () => {
   // Handle assignment
   const handleAssign = async () => {
     try {
-      await fetchData(`/projects/${selectedProject}/assign-client`, "POST", {
-        clientId: assigningClient._id,
+      await fetchData(`/projects/${selectedProject}`, "POST", {
+        client: assigningClient._id,
       });
       setAssigningClient(null);
       setSelectedProject("");

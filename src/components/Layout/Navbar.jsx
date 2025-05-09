@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -8,6 +8,7 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
@@ -34,11 +35,19 @@ const Navbar = () => {
             <div className="hidden sm:block sm:ml-6">
               <div className="flex space-x-4">
                 <Link
-                  href="/clients"
+                  href="/dashboard"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  Clients
+                  Dashboard
                 </Link>
+                {user.role === "admin" && (
+                  <Link
+                    href="/clients"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Clients
+                  </Link>
+                )}
                 <Link
                   href="/team"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -51,12 +60,14 @@ const Navbar = () => {
                 >
                   Projects
                 </Link>
-                <Link
-                  href="/invoices"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Invoices
-                </Link>
+                {user.role === "admin" && (
+                  <Link
+                    href="/invoices"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Invoices
+                  </Link>
+                )}
 
                 <button
                   onClick={handleLogout}
@@ -67,8 +78,67 @@ const Navbar = () => {
               </div>
             </div>
           </div>
+
+          {/* Mobile Menu Button */}
+          <div className="sm:hidden">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+            >
+              {isMobileMenuOpen ? "Close" : "Menu"}
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="sm:hidden bg-gray-800 text-white">
+          <div className="space-y-4 p-4">
+            <Link
+              href="/dashboard"
+              className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Dashboard
+            </Link>
+            {user.role === "admin" && (
+              <Link
+                href="/clients"
+                className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Clients
+              </Link>
+            )}
+            <Link
+              href="/team"
+              className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Team
+            </Link>
+            <Link
+              href="/projects"
+              className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Projects
+            </Link>
+            {user.role === "admin" && (
+              <Link
+                href="/invoices"
+                className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Invoices
+              </Link>
+            )}
+
+            <button
+              onClick={handleLogout}
+              className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
