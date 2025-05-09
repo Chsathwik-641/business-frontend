@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { APP_BASE_URL } from "../../helpers";
 
 export default function RegisterForm() {
   const [form, setForm] = useState({
@@ -17,10 +18,7 @@ export default function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        "http://business-backend-production-31d3.up.railway.app/api/auth/register",
-        form
-      );
+      await axios.post(`${APP_BASE_URL}/api/auth/register`, form);
       router.push("/login");
     } catch (err) {
       alert("Registration failed");
