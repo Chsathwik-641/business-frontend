@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { APP_BASE_URL } from "../layout";
+import { APP_BASE_URL } from "../../helpers";
 
 const ClientsPage = () => {
   const [clients, setClients] = useState([]);

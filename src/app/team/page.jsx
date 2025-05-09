@@ -4,7 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getProjects } from "../../utils/api";
-import { APP_BASE_URL } from "../layout";
+import { APP_BASE_URL } from "../../helpers";
 
 const Team = () => {
   const { user } = useAuth();

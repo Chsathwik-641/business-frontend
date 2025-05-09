@@ -3,7 +3,7 @@ import { useAuth } from "../../hooks/useAuth";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { APP_BASE_URL } from "../layout";
+import { APP_BASE_URL } from "../../helpers";
 
 const Dashboard = () => {
   const router = useRouter();

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../../hooks/useAuth";
 import { getProjects, createProject, getUsers } from "../../utils/api";
 import axios from "axios";
-import { APP_BASE_URL } from "../layout";
+import { APP_BASE_URL } from "../../helpers";
 
 export default function ProjectsPage() {
   const { user } = useAuth();

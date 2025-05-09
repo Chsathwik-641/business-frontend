@@ -1,4 +1,4 @@
-import { APP_BASE_URL } from "../app/layout";
+import { APP_BASE_URL } from "../helpers";
 
 // Utility function to fetch users
 export const getUsers = async (token) => {
