@@ -58,7 +58,6 @@ export default function InvoicesPage() {
     }
   };
 
-  // Handle invoice download
   const handleDownload = async (id) => {
     try {
       await downloadInvoice(id, token);
@@ -67,7 +66,6 @@ export default function InvoicesPage() {
     }
   };
 
-  // Handle new invoice creation
   const handleCreateInvoice = async (e) => {
     e.preventDefault();
     try {
@@ -79,7 +77,6 @@ export default function InvoicesPage() {
     }
   };
 
-  // Handle invoice deletion
   const handleDelete = async (id) => {
     try {
       await deleteInvoice(id, token);

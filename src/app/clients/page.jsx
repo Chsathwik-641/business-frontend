@@ -16,7 +16,6 @@ const ClientsPage = () => {
 
   console.log("came here User Token:", user?.token);
 
-  // Helper function to fetch data with Authorization
   const fetchData = async (url, method = "GET", body = null) => {
     const token = user?.token;
     const headers = {
@@ -42,7 +41,6 @@ const ClientsPage = () => {
     }
   };
 
-  // Fetch clients
   const fetchClients = async () => {
     const token = user?.token;
 
@@ -69,7 +67,6 @@ const ClientsPage = () => {
     } catch (error) {}
   };
 
-  // Fetch projects for assignment
   const fetchProjects = async () => {
     try {
       const data = await fetchData("/projects");
@@ -79,32 +76,27 @@ const ClientsPage = () => {
     }
   };
 
-  // Form change handler
   const handleFormChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Submit handler for adding/editing a client
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (editingClient) {
-        // Edit client
         await fetchData(`/clients/${editingClient._id}`, "PUT", form);
       } else {
-        // Add new client
         await fetchData("/clients", "POST", form);
       }
 
       setForm({ name: "", email: "", company: "" });
       setEditingClient(null);
-      fetchClients(); // Re-fetch the clients after submit
+      fetchClients();
     } catch (error) {
       console.error("Error submitting client:", error);
     }
   };
 
-  // Edit handler
   const handleEdit = (client) => {
     setEditingClient(client);
     setForm({
@@ -114,13 +106,11 @@ const ClientsPage = () => {
     });
   };
 
-  // Assign client to project handler
   const handleAssignClick = async (client) => {
     setAssigningClient(client);
     await fetchProjects();
   };
 
-  // Handle assignment
   const handleAssign = async () => {
     try {
       await fetchData(`/projects/${selectedProject}`, "POST", {
@@ -134,12 +124,11 @@ const ClientsPage = () => {
     }
   };
 
-  // Delete client handler
   const handleDelete = async (id) => {
     if (window.confirm("Delete this client?")) {
       try {
         await fetchData(`/clients/${id}`, "DELETE");
-        fetchClients(); // Re-fetch clients after deletion
+        fetchClients();
       } catch (error) {
         console.error("Error deleting client:", error);
       }
@@ -155,7 +144,6 @@ const ClientsPage = () => {
     <div className="p-6 max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Client Management</h1>
 
-      {/* Form */}
       <form
         onSubmit={handleSubmit}
         className="bg-white border p-4 mb-6 rounded"
@@ -195,7 +183,6 @@ const ClientsPage = () => {
         </button>
       </form>
 
-      {/* List of Clients */}
       <h2 className="text-xl font-semibold mb-2">All Clients</h2>
       <ul>
         {clients.map((client) => (
@@ -232,7 +219,6 @@ const ClientsPage = () => {
         ))}
       </ul>
 
-      {/* Assignment Section */}
       {assigningClient && (
         <div className="mt-6 bg-gray-100 border p-4 rounded">
           <h3 className="text-lg font-medium mb-2">

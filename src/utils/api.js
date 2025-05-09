@@ -1,6 +1,5 @@
 import { APP_BASE_URL } from "../helpers";
 
-// Utility function to fetch users
 export const getUsers = async (token) => {
   try {
     const response = await fetch(`${APP_BASE_URL}/api/users`, {
@@ -15,8 +14,8 @@ export const getUsers = async (token) => {
       throw new Error("Error fetching users");
     }
 
-    const data = await response.json(); // Parse the response as JSON
-    return data; // Returns the list of users
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error("Error fetching users:", error);
     throw new Error("Error fetching users");
@@ -122,7 +121,7 @@ export const assignTeam = async (projectId, userId, role, token) => {
     throw new Error("Failed to assign team member");
   }
 
-  return await response.json(); // Return the updated project data
+  return await response.json();
 };
 
 export const getInvoices = async (token) => {
@@ -172,7 +171,6 @@ export const deleteInvoice = async (id, token) => {
       },
     });
 
-    // If the response is not OK, throw an error
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(
@@ -183,7 +181,7 @@ export const deleteInvoice = async (id, token) => {
     console.log(`Invoice ${id} deleted successfully.`);
   } catch (error) {
     console.error("Error deleting invoice:", error.message);
-    // Optionally, show an alert or toast to the user
+
     alert(`Error: ${error.message}`);
   }
 };
