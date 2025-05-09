@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { APP_BASE_URL } from "../layout";
 
 const ClientsPage = () => {
   const [clients, setClients] = useState([]);
@@ -13,7 +14,6 @@ const ClientsPage = () => {
   const { user } = useAuth();
   const token = user?.token;
 
-  const API_BASE_URL = "http://localhost:5000/api";
   console.log("came here User Token:", user?.token);
 
   // Helper function to fetch data with Authorization
@@ -25,7 +25,7 @@ const ClientsPage = () => {
     };
 
     try {
-      const response = await fetch(`${API_BASE_URL}${url}`, {
+      const response = await fetch(`${APP_BASE_URL}${url}`, {
         method,
         headers,
         body: body ? JSON.stringify(body) : null,
@@ -52,7 +52,7 @@ const ClientsPage = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/clients", {
+      const response = await fetch(`${APP_BASE_URL}/api/clients`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

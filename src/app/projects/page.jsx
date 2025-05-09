@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../../hooks/useAuth";
 import { getProjects, createProject, getUsers } from "../../utils/api";
 import axios from "axios";
+import { APP_BASE_URL } from "../layout";
 
 export default function ProjectsPage() {
   const { user } = useAuth();
@@ -94,7 +95,7 @@ export default function ProjectsPage() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/team",
+        `${APP_BASE_URL}/api/team`,
         {
           projectId: selectedProject._id,
           userId: selectedUserId,
@@ -106,7 +107,7 @@ export default function ProjectsPage() {
       );
 
       await axios.post(
-        `http://localhost:5000/api/projects/${selectedProject._id}`,
+        `${APP_BASE_URL}/api/projects/${selectedProject._id}`,
         { hasTeam: true, status: "in-progress" },
         {
           headers: { Authorization: `Bearer ${user.token}` },
@@ -124,7 +125,7 @@ export default function ProjectsPage() {
     console.log("came at the tasks", tasks);
     try {
       await axios.post(
-        `http://localhost:5000/api/tasks`,
+        `${APP_BASE_URL}/api/tasks`,
         tasks,
         {
           headers: {
@@ -146,7 +147,7 @@ export default function ProjectsPage() {
   };
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/projects/${id}`, {
+      await axios.delete(`${APP_BASE_URL}/api/projects/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       alert("project deleted");

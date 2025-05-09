@@ -4,6 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getProjects } from "../../utils/api";
+import { APP_BASE_URL } from "../layout";
 
 const Team = () => {
   const { user } = useAuth();
@@ -18,7 +19,7 @@ const Team = () => {
 
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/users", {
+        const res = await axios.get(`${APP_BASE_URL}/api/users`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
 
@@ -41,10 +42,9 @@ const Team = () => {
 
   const getTeamDetails = async (id) => {
     try {
-      const res = await axios.get(
-        `http://localhost:5000/api/team/project/${id}`,
-        { headers: { Authorization: `Bearer ${user.token}` } }
-      );
+      const res = await axios.get(`${APP_BASE_URL}/api/team/project/${id}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
       setGroup(res.data);
       setShow(true);
     } catch {}
