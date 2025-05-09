@@ -17,8 +17,8 @@ const Navbar = () => {
 
   // Hide navbar on login or register page
   if (
-    pathname === "/auth/login" ||
-    pathname === "/auth/register" ||
+    pathname.includes("/login") ||
+    pathname.includes("/register") ||
     !user // hide if not logged in
   ) {
     return null;
