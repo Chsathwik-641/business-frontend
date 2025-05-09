@@ -1,2 +1,1 @@
-export const APP_BASE_URL =
-  "https://business-backend-production-31d3.up.railway.app";
+export const APP_BASE_URL = "http://localhost:5000";
