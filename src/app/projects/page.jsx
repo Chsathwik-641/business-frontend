@@ -38,7 +38,6 @@ export default function ProjectsPage() {
     if (user?.token) {
       getProjects(user.token)
         .then((data) => {
-          console.log("Fetched projects:", data);
           setProjects(data);
         })
         .catch(console.error);
@@ -113,8 +112,8 @@ export default function ProjectsPage() {
           headers: { Authorization: `Bearer ${user.token}` },
         }
       );
-      getProjects(user.token);
-      console.log("Assignment success:", res.data);
+      getProjects(user.token).then((data) => setProjects(data));
+
       setAssing(false);
       setSelectedProject("");
     } catch (err) {}
