@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
-import { APP_BASE_URL } from "../../helpers";
+// import { APP_BASE_URL } from "../../helpers";
 
 const LoginForm = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -16,7 +16,10 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${APP_BASE_URL}/api/auth/login`, form);
+      const res = await axios.post(
+        `https://business-backend-production-31d3.up.railway.app/api/auth/login`,
+        form
+      );
       login(res.data);
       router.push("/dashboard");
     } catch (err) {
