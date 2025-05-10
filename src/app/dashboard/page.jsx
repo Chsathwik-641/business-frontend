@@ -15,26 +15,22 @@ const Dashboard = () => {
   const { user } = useAuth();
   const [clients, setClients] = useState([]);
 
-  // Fetch users
   useEffect(() => {
     fetchUsers();
   }, [user, router]);
 
-  // Fetch projects
   useEffect(() => {
     if (user?.token) {
       fetchProjects();
     }
   }, [user]);
 
-  // Fetch clients when token changes
   useEffect(() => {
     if (user?.token) {
       fetchClients();
     }
   }, [user?.token]);
 
-  // Fetch users function
   const fetchUsers = async () => {
     try {
       const res = await axios.get(`${APP_BASE_URL}/api/users`, {
@@ -44,7 +40,6 @@ const Dashboard = () => {
     } catch (error) {}
   };
 
-  // Fetch clients function
   const fetchClients = async () => {
     const token = user?.token;
     if (!token) {
@@ -63,7 +58,6 @@ const Dashboard = () => {
     } catch (error) {}
   };
 
-  // Fetch projects function
   const fetchProjects = async () => {
     try {
       const res = await axios.get(`${APP_BASE_URL}/api/projects`, {
@@ -73,7 +67,6 @@ const Dashboard = () => {
     } catch (error) {}
   };
 
-  // Handle user click to view details
   const handleUserClick = async (userId) => {
     setLoading(true);
     setError(null);
