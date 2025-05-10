@@ -112,7 +112,7 @@ export default function ProjectsPage() {
           headers: { Authorization: `Bearer ${user.token}` },
         }
       );
-      getProjects(user.token).then((data) => setProjects(data));
+      // getProjects(user.token).then((data) => setProjects(data));
 
       setAssing(false);
       setSelectedProject("");
