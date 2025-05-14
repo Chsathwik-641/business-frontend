@@ -10,11 +10,11 @@ const ClientsPage = () => {
   const [form, setForm] = useState({ name: "", email: "", company: "" });
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
+  const [serachClient, setSearchClient] = useState("");
+  const [searchedClient, setSearchedClient] = useState([]);
 
   const { user } = useAuth();
   const token = user?.token;
-
-  console.log("came here User Token:", user?.token);
 
   const fetchData = async (url, method = "GET", body = null) => {
     const token = user?.token;
@@ -64,6 +64,7 @@ const ClientsPage = () => {
 
       const data = await response.json();
       setClients(data);
+      setSearchedClient(data);
     } catch (error) {}
   };
 
@@ -78,6 +79,17 @@ const ClientsPage = () => {
 
   const handleFormChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSearch = () => {
+    if (serachClient.trim() === "") {
+      setSearchedClient(clients);
+      return;
+    }
+    const filtered = clients.filter((c) =>
+      c.company.toLowerCase().includes(serachClient.toLowerCase())
+    );
+    setSearchedClient(filtered);
   };
 
   const handleSubmit = async (e) => {
@@ -142,7 +154,9 @@ const ClientsPage = () => {
   }, [token]);
   return (
     <div className="p-6 max-w-3xl mx-auto mt-32">
-      <h1 className="text-2xl font-bold mb-4">Client Management</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+        Client Management
+      </h1>
 
       <form
         onSubmit={handleSubmit}
@@ -183,9 +197,33 @@ const ClientsPage = () => {
         </button>
       </form>
 
-      <h2 className="text-xl font-semibold mb-2">All Clients</h2>
+      <div className="flex items-center w-full mb-4 ">
+        <input
+          type="text"
+          placeholder="Search by company"
+          value={serachClient}
+          onChange={(e) => {
+            setSearchClient(e.target.value);
+            if (e.target.value.trim() === "") {
+              setSearchedClient(clients);
+            }
+          }}
+          className="flex-1 border border-r-0 rounded-l-md p-2"
+        />
+
+        <button
+          onClick={handleSearch}
+          className="bg-blue-600 text-white p-2 border border-l-0 rounded-r-md"
+        >
+          <i className="bx bx-search text-xl"></i>
+        </button>
+      </div>
+
+      <h2 className="text-3xl font-bold text-gray-800 m-9 text-center">
+        All Clients
+      </h2>
       <ul>
-        {clients.map((client) => (
+        {searchedClient.map((client) => (
           <li
             key={client._id}
             className="border p-3 mb-2 rounded flex justify-between"
@@ -220,7 +258,7 @@ const ClientsPage = () => {
       </ul>
 
       {assigningClient && (
-        <div className="mt-6 bg-gray-100 border p-4 rounded">
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white border p-6 rounded shadow-lg z-50 w-full max-w-md">
           <h3 className="text-lg font-medium mb-2">
             Assign {assigningClient.name} to a Project
           </h3>
