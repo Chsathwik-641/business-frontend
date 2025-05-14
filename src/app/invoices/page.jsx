@@ -102,11 +102,13 @@ export default function InvoicesPage() {
   const handleCreateInvoice = async (e) => {
     e.preventDefault();
     try {
-      await createInvoice(newInvoice, token);
-      setMessage(" Invoice created successfully.");
+      const createdInvoice = await createInvoice(newInvoice, token);
+
+      setInvoices((prevInvoices) => [...prevInvoices, createdInvoice]);
+
+      setMessage("Invoice created successfully.");
       setError("");
       setNewInvoice({ projectId: "", amount: 0, dueDate: "" });
-      fetchAllInvoices();
     } catch (err) {
       setError(err.message || "Failed to create invoice");
       setMessage("");
@@ -117,114 +119,116 @@ export default function InvoicesPage() {
   const handleDelete = async (id) => {
     try {
       await deleteInvoice(id, token);
+      setInvoices((prev) => prev.filter((inv) => inv._id !== id));
       setMessage("Invoice deleted successfully.");
       setError("");
-      fetchAllInvoices();
     } catch (error) {
       console.error("Error deleting invoice:", error.message);
       setError("Failed to delete invoice.");
       setMessage("");
     }
   };
+
   const today = new Date().toISOString().split("T")[0];
 
   return (
     <div className="p-8 mt-32">
-      {message && (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-          {message}
-        </div>
-      )}
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
-        </div>
-      )}
-
-      <form
-        onSubmit={handleCreateInvoice}
-        className="mb-10 space-y-6 bg-white p-8 rounded-2xl shadow-xl w-full max-w-2xl mx-auto border border-gray-100"
-      >
-        <h2 className="text-2xl font-bold text-center text-gray-800">
-          Create New Invoice
-        </h2>
-
-        <div>
-          <label
-            htmlFor="project"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Select Project
-          </label>
-          <select
-            id="project"
-            value={newInvoice.projectId}
-            onChange={(e) =>
-              setNewInvoice({ ...newInvoice, projectId: e.target.value })
-            }
-            required
-            className="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-          >
-            <option value="">-- Choose a Project --</option>
-            {projects.map((project) => (
-              <option key={project._id} value={project._id}>
-                {project.title}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label
-            htmlFor="amount"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Amount ($)
-          </label>
-          <input
-            id="amount"
-            type="number"
-            value={newInvoice.amount}
-            onChange={(e) =>
-              setNewInvoice({ ...newInvoice, amount: Number(e.target.value) })
-            }
-            placeholder="Enter amount"
-            required
-            className="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="dueDate"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Due Date
-          </label>
-          <input
-            id="dueDate"
-            min={today}
-            type="date"
-            value={newInvoice.dueDate}
-            onChange={(e) =>
-              setNewInvoice({ ...newInvoice, dueDate: e.target.value })
-            }
-            required
-            className="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-lg text-sm font-semibold hover:bg-blue-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      <div>
+        <form
+          onSubmit={handleCreateInvoice}
+          className="mb-6 space-y-6 bg-white p-8 rounded-2xl shadow-xl w-full max-w-2xl mx-auto border border-gray-100"
         >
-          Create Invoice
-        </button>
-      </form>
+          <h2 className="text-2xl font-bold text-center text-gray-800">
+            Create New Invoice
+          </h2>
+
+          <div>
+            <label
+              htmlFor="project"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Select Project
+            </label>
+            <select
+              id="project"
+              value={newInvoice.projectId}
+              onChange={(e) =>
+                setNewInvoice({ ...newInvoice, projectId: e.target.value })
+              }
+              required
+              className="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            >
+              <option value="">-- Choose a Project --</option>
+              {projects.map((project) => (
+                <option key={project._id} value={project._id}>
+                  {project.title}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label
+              htmlFor="amount"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Amount ($)
+            </label>
+            <input
+              id="amount"
+              type="number"
+              value={newInvoice.amount}
+              onChange={(e) =>
+                setNewInvoice({ ...newInvoice, amount: Number(e.target.value) })
+              }
+              placeholder="Enter amount"
+              required
+              className="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="dueDate"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Due Date
+            </label>
+            <input
+              id="dueDate"
+              min={today}
+              type="date"
+              value={newInvoice.dueDate}
+              onChange={(e) =>
+                setNewInvoice({ ...newInvoice, dueDate: e.target.value })
+              }
+              required
+              className="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg text-sm font-semibold hover:bg-blue-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Create Invoice
+          </button>
+        </form>
+        {message && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6 max-w-2xl mx-auto">
+            {message}
+          </div>
+        )}
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6 max-w-2xl mx-auto">
+            {error}
+          </div>
+        )}
+      </div>
 
       {loading ? (
         <div className="flex justify-center py-10">
-          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spi"></div>
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (
         <div>
