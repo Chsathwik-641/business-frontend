@@ -141,7 +141,7 @@ const ClientsPage = () => {
     }
   }, [token]);
   return (
-    <div className="p-6 max-w-3xl mx-auto">
+    <div className="p-6 max-w-3xl mx-auto mt-32">
       <h1 className="text-2xl font-bold mb-4">Client Management</h1>
 
       <form

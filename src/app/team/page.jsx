@@ -27,7 +27,7 @@ const Team = () => {
         const teamMembers = users.filter((u) => u.role === "team-member");
         setTeam(teamMembers);
 
-        const projectList = await getProjects(user.token); // pass token if needed
+        const projectList = await getProjects(user.token);
         setProjects(projectList);
       } catch (error) {
         console.error(
@@ -51,7 +51,7 @@ const Team = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 mt-32">
       <h1 className="text-2xl font-bold mb-6">Team Members in the company</h1>
       <ul className="space-y-4">
         {team.map((member) => (

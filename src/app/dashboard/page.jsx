@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { APP_BASE_URL } from "../../helpers";
+import { getClients, getProjects, getUserProfile } from "../../utils/api";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -48,22 +49,15 @@ const Dashboard = () => {
     }
 
     try {
-      const response = await axios.get(`${APP_BASE_URL}/api/clients`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setClients(response.data);
+      const res = await getClients(user.token);
+      setClients(res);
     } catch (error) {}
   };
 
   const fetchProjects = async () => {
     try {
-      const res = await axios.get(`${APP_BASE_URL}/api/projects`, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
-      setProjects(res.data);
+      const res = await getProjects(user.token);
+      setProjects(res);
     } catch (error) {}
   };
 
@@ -71,10 +65,8 @@ const Dashboard = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get(`${APP_BASE_URL}/api/users/${userId}`, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
-      setSelectedUser(res.data);
+      const res = getUserProfile(user.token);
+      setSelectedUser(res);
     } catch (error) {
     } finally {
       setLoading(false);
@@ -82,75 +74,97 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="bg-blue-600 text-white text-3xl font-bold py-4 px-6 rounded-t-lg shadow-lg mb-6">
+    <div className="p-6 bg-gray-50 min-h-screen mt-32">
+      <h1 className="bg-blue-600 text-white text-3xl font-bold py-4 px-6 rounded-lg shadow mb-8">
         Dashboard
       </h1>
 
-      <h2 className="text-xl font-semibold mb-2">User Management</h2>
+      <section className="mb-10">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          User Management
+        </h2>
 
-      <ul className="space-y-2">
-        {users.map((u) => (
-          <li
-            key={u._id}
-            className="cursor-pointer text-blue-500 hover:text-blue-700 transition-colors duration-200 ease-in-out p-2 rounded-lg shadow-md hover:shadow-lg"
-            onClick={() => handleUserClick(u._id)}
-          >
-            <p className="font-semibold">{u.name} </p>
-            <p className="text-sm text-gray-500">{u.email}</p>
-            <p className="text-xs text-gray-400">{u.role}</p>
-          </li>
-        ))}
-      </ul>
+        <ul className="space-y-3">
+          {users.map((u) => (
+            <li
+              key={u._id}
+              className="bg-white cursor-pointer hover:bg-blue-50 border border-gray-200 p-4 rounded-lg shadow-sm hover:shadow-md transition duration-200"
+              onClick={() => handleUserClick(u._id)}
+            >
+              <p className="font-semibold text-gray-800">{u.name}</p>
+              <p className="text-sm text-gray-500">{u.email}</p>
+              <p className="text-xs text-gray-400">{u.role}</p>
+            </li>
+          ))}
+        </ul>
 
-      {selectedUser && !loading && (
-        <div className="mt-4">
-          <h3 className="text-xl font-semibold">User Details</h3>
-          <p>
-            <strong>Name:</strong> {selectedUser.name}
-          </p>
-          <p>
-            <strong>Email:</strong> {selectedUser.email}
-          </p>
-          <p>
-            <strong>Role:</strong> {selectedUser.role}
-          </p>
-        </div>
+        {selectedUser && !loading && (
+          <div className="mt-6 bg-white p-4 rounded-lg shadow">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              User Details
+            </h3>
+            <p>
+              <strong>Name:</strong> {selectedUser.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {selectedUser.email}
+            </p>
+            <p>
+              <strong>Role:</strong> {selectedUser.role}
+            </p>
+          </div>
+        )}
+      </section>
+
+      <section className="mb-10">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          All Projects
+        </h2>
+        <ul className="space-y-3">
+          {projects.map((project) => (
+            <li
+              key={project._id}
+              className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm"
+            >
+              <p>
+                <strong>Title:</strong> {project.title}
+              </p>
+              <p>
+                <strong>Description:</strong> {project.description}
+              </p>
+              <p>
+                <strong>Status:</strong> {project.status}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Clients</h2>
+        <ul className="space-y-3">
+          {clients.map((client) => (
+            <li
+              key={client._id}
+              className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm"
+            >
+              <p>
+                <strong>Name:</strong> {client.name}
+              </p>
+              <p>
+                <strong>Email:</strong> {client.email}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {loading && (
+        <p className="mt-4 text-blue-500 font-medium">
+          Loading user details...
+        </p>
       )}
-
-      <h2 className="text-xl font-semibold mt-6">All Projects</h2>
-      <ul className="space-y-2 mt-2">
-        {projects.map((project) => (
-          <li key={project._id} className="border p-3 rounded shadow">
-            <p>
-              <strong>Title:</strong> {project.title}
-            </p>
-            <p>
-              <strong>Description:</strong> {project.description}
-            </p>
-            <p>
-              <strong>Status:</strong> {project.status}
-            </p>
-          </li>
-        ))}
-      </ul>
-
-      <h2 className="text-xl font-semibold mt-6">Clients</h2>
-      <ul className="space-y-2 mt-2">
-        {clients.map((client) => (
-          <li key={client._id} className="border p-3 rounded shadow">
-            <p>
-              <strong>Name:</strong> {client.name}
-            </p>
-            <p>
-              <strong>Email:</strong> {client.email}
-            </p>
-          </li>
-        ))}
-      </ul>
-
-      {loading && <p>Loading user details...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="mt-4 text-red-500 font-medium">{error}</p>}
     </div>
   );
 };

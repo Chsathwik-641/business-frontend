@@ -157,7 +157,7 @@ export default function ProjectsPage() {
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <div className="p-4">
+    <div className="p-4 mt-32">
       <h1 className="text-2xl font-bold mb-4">Projects</h1>
 
       {user?.role === "admin" && (

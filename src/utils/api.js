@@ -69,6 +69,21 @@ export const getProjects = async (token) => {
   return await response.json();
 };
 
+export async function getClients(token) {
+  const res = await fetch(`${APP_BASE_URL}/api/clients`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`Failed to fetch clients`);
+  }
+  const data = await res.json();
+  console.log("came to the api", data);
+  return data;
+}
+
 export async function getProjectById(id, token) {
   const res = await fetch(`${APP_BASE_URL}/api/projects/${id}`, {
     headers: {
@@ -145,8 +160,13 @@ export const createInvoice = async (data, token) => {
     body: JSON.stringify(data),
   });
 
-  if (!response.ok) throw new Error("Failed to create invoice");
-  return await response.json();
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Failed to create invoice");
+  }
+
+  return result;
 };
 
 export const updateInvoiceStatus = async (id, status, token) => {
