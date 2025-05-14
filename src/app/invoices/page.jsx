@@ -229,7 +229,7 @@ export default function InvoicesPage() {
       ) : (
         <div>
           <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-            Invioces List
+            Invoices List
           </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-8 sm:px-16 lg:px-32 py-8">
             {invoices.length > 0 ? (
@@ -241,15 +241,15 @@ export default function InvoicesPage() {
                   <div className="text-gray-800 space-y-1 text-sm sm:text-base mb-4">
                     <p>
                       <span className="font-semibold">Client: </span>{" "}
-                      {invoice.clientInfo.name}
+                      {invoice.clientInfo?.name || "Unknown Client"}
                     </p>
                     <p>
                       <span className="font-semibold">Email: </span>{" "}
-                      {invoice.clientInfo.email}
+                      {invoice.clientInfo?.email || "No email"}
                     </p>
                     <p>
                       <span className="font-semibold">Project: </span>{" "}
-                      {invoice.project.title}
+                      {invoice.project?.title || "Unknown Project"}
                     </p>
                     <p>
                       <span className="font-semibold">Amount: </span> $
@@ -269,7 +269,9 @@ export default function InvoicesPage() {
                     </p>
                     <p>
                       <span className="font-semibold">Due:</span>{" "}
-                      {new Date(invoice.dueDate).toLocaleDateString()}
+                      {invoice.dueDate
+                        ? new Date(invoice.dueDate).toLocaleDateString()
+                        : "Not set"}
                     </p>
                     {invoice.paidDate && (
                       <p>
