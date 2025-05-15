@@ -201,11 +201,11 @@ const Dashboard = () => {
                     <strong>Manager:</strong> {project.manager.email}
                   </p>
                   <p>
-                    <strong>Start Date:</strong>{" "}
+                    <strong>Start Date:</strong>
                     {new Date(project.startDate).toDateString()}
                   </p>
                   <p>
-                    <strong>Start Date:</strong>{" "}
+                    <strong>End Date:</strong>
                     {new Date(project.endDate).toDateString()}
                   </p>
                 </li>
